@@ -1,0 +1,161 @@
+单卡单任务
+python tools/train.py \
+    ${CONFIG_FILE} \
+    [optional arguments]
+--gpu-ids
+     train_pipeline.
+多卡单任务
+bash ./tools/dist_train.sh \
+    ${CONFIG_FILE} \
+    ${GPU_NUM} \
+    [optional arguments]
+
+多任务
+CUDA_VISIBLE_DEVICES=0,1,2,3 PORT=29500 ./tools/dist_train.sh ${CONFIG_FILE} 4
+CUDA_VISIBLE_DEVICES=4,5,6,7 PORT=29501 ./tools/dist_train.sh ${CONFIG_FILE} 4
+
+
+二阶段的模板：
+bash ./tools/dist_train.sh configs/clfpn/faster_rcnn_r50_afpn4_1x_coco.py 2  --options optimizer.lr=0.005
+bash ./tools/dist_train2.sh configs/clfpn/faster_rcnn_r50_cemfpn2_1x_coco.py 2  --options data.workers_per_gpu=0 optimizer.lr=0.005
+
+多卡测试
+
+
+bash tools/dist_test.sh configs/clfpn/faster_rcnn_r50_clfpn2_1x_coco.py work_dirs/faster_rcnn_r50_clfpn2_1x_coco/epoch_12.pth 2 --format-only --options "jsonfile_prefix=./clfpn-r50_test-dev_results"
+bash tools/dist_test2.sh configs/clfpn/faster_rcnn_r101_clfpn2_1x_coco.py work_dirs/faster_rcnn_r101_clfpn2_1x_coco/epoch_12.pth 2 --format-only --options "jsonfile_prefix=./clfpn-r101_test-dev_results"
+
+bash tools/dist_test.sh configs/fcos/fcos_center_r50_caffe_fpn_gn-head_1x_coco.py  work_dirs/fcos_r50_caffe_fpn_gn-head_1x_coco/epoch_12.pth 2 --format-only  --options "jsonfile_prefix=./fcos-r50_test-dev_results"
+
+测试模型大小
+python tools/analysis_tools/get_flops.py ${CONFIG_FILE} [--shape ${INPUT_SHAPE}]
+
+
+显示预测结果
+我们的方法
+python demo/image_demo.py demo/showDet/000000000229.jpg configs/clfpn/faster_rcnn_r50_clfpn2_1x_coco.py work_dirs/faster_rcnn_r50_clfpn2_1x_coco/epoch_12.pth --score-thr 0.5
+
+fpn的可视化
+python demo/image_demo.py demo/showDet/000000000229.jpg configs/clfpn/faster_rcnn_r50_fpn_1x_coco.py work_dirs/faster_rcnn_r50_fpn_1x_coco/epoch_12.pth --score-thr 0.5
+
+
+ python DetVisGUI/DetVisGUI_test_2.py configs/clfpn/faster_rcnn_r50_clfpn2_1x_coco.py work_dirs/faster_rcnn_r50_clfpn2_1x_coco/epoch_12.pth data/coco/val2017   --output  output/clfpn
+
+ python DetVisGUI/DetVisGUI_test_2.py configs/clfpn/faster_rcnn_r50_clfpn2_1x_coco.py work_dirs/faster_rcnn_r50_fpn_1x_coco/epoch_12.pth DetVisGUI/data/test_images/  --output  output/fpn
+
+ 12月10日
+(bash ./tools/dist_train.sh configs/clfpn/faster_rcnn_r50_afpn4-l_1x_coco.py 2  --options data.workers_per_gpu=0 optimizer.lr=0.005 &)
+(bash ./tools/dist_train2.sh configs/clfpn/faster_rcnn_r50_afpn4-ls_1x_coco.py 2  --options data.workers_per_gpu=0 optimizer.lr=0.005 &)
+
+
+
+
+12月14日
+
+
+(bash ./tools/dist_train.sh configs/clfpn/faster_rcnn_r50_cemfpn2-7_1x_coco.py 2  --options data.workers_per_gpu=0 optimizer.lr=0.005 &)
+(bash ./tools/dist_train3.sh configs/clfpn/faster_rcnn_r50_cemfpn2-5_1x_coco.py 2  --options data.workers_per_gpu=0 optimizer.lr=0.005 &)
+
+
+
+
+
+12月17日
+下次跑afpn-s，重新跑一次afpn4
+
+(bash ./tools/dist_train.sh configs/clfpn/faster_rcnn_r50_afpn4-2_1x_coco.py 2  --options  optimizer.lr=0.005 &)
+(bash ./tools/dist_train2.sh configs/clfpn/faster_rcnn_r50_fpn_1x_coco.py 2  --options   optimizer.lr=0.005 &)
+
+12月21日
+
+
+(bash ./tools/dist_train.sh configs/clfpn/faster_rcnn_r50_cemfpn2-7_1x_coco.py 2  --options data.workers_per_gpu=0 optimizer.lr=0.005 &)
+(bash ./tools/dist_train3.sh configs/clfpn/faster_rcnn_r50_cemfpn2-5_1x_coco.py 2  --options data.workers_per_gpu=0 optimizer.lr=0.005 &)
+
+12月26
+
+(bash ./tools/dist_train.sh configs/clfpn/faster_rcnn_r50_afpn4-2_1x_coco.py 2  --options  optimizer.lr=0.005 resume_from=work_dirs/faster_rcnn_r50_afpn4-2_1x_coco/epoch_7.pth &)
+
+(bash ./tools/dist_train3.sh configs/clfpn/faster_rcnn_r50_clfpn3_1x_coco.py 2  --options  optimizer.lr=0.005 &)
+
+(bash ./tools/dist_train.sh configs/clfpn/faster_rcnn_r50_afpn4-lsc2_1x_coco.py 2  --options optimizer.lr=0.005 &)
+
+
+(bash ./tools/dist_train.sh configs/clfpn/faster_rcnn_r50_afpn4-lsc3_1x_coco.py 2  --options optimizer.lr=0.005 &)
+
+
+(bash ./tools/dist_train2.sh configs/clfpn/faster_rcnn_r50_afpn4-ls2_1x_coco.py 2  --options optimizer.lr=0.005 resume_from=work_dirs/faster_rcnn_r50_afpn4-ls2_1x_coco/epoch_10.pth &)
+
+(bash ./tools/dist_train3.sh configs/clfpn/faster_rcnn_r50_clfpn5_1x_coco.py 2  --options  optimizer.lr=0.005 &)
+
+2022/1/4
+求求了，不想再跑
+(bash ./tools/dist_train.sh configs/clfpn/faster_rcnn_r50_afpn4-lsc3_1x_coco.py 2  --options optimizer.lr=0.005 &)
+
+(bash ./tools/dist_train2.sh configs/clfpn/faster_rcnn_r50_afpn4-ls2_1x_coco.py 2  --options optimizer.lr=0.005 resume_from=work_dirs/faster_rcnn_r50_afpn4-ls2_1x_coco/epoch_10.pth &)
+
+(bash ./tools/dist_train.sh configs/clfpn/faster_rcnn_r50_afpn4-lsc4_1x_coco.py 2  --options optimizer.lr=0.005 &)
+
+(bash ./tools/dist_train.sh configs/clfpn/faster_rcnn_r50_afpn4-lsc_1x_coco.py 2  --options optimizer.lr=0.005 resume_from=work_dirs/faster_rcnn_r50_afpn4-sc_1x_coco/epoch_9.pth &)
+
+
+计算复杂度
+python tools/analysis_tools/get_flops.py ${CONFIG_FILE} [--shape ${INPUT_SHAPE}]
+
+==============================
+python tools/analysis_tools/get_flops.py configs/clfpn/faster_rcnn_r50_clfpn2_1x_coco.py
+Input shape: (3, 1280, 800)
+Flops: 222.3 GFLOPs
+Params: 55.97 M
+==============================
+
+python tools/analysis_tools/get_flops.py configs/clfpn/faster_rcnn_r101_clfpn2_1x_coco.py
+==============================
+Input shape: (3, 1280, 800)
+Flops: 298.37 GFLOPs
+Params: 74.96 M
+==============================
+
+python tools/analysis_tools/get_flops.py configs/clfpn/faster_rcnn_r50_fpn_1x_coco.py
+==============================
+Input shape: (3, 1280, 800)
+Flops: 207.07 GFLOPs
+Params: 41.53 M
+==============================
+
+python tools/analysis_tools/get_flops.py configs/clfpn/faster_rcnn_r101_fpn_1x_coco.py
+==============================
+Input shape: (3, 1280, 800)
+Flops: 283.14 GFLOPs
+Params: 60.52 M
+==============================
+
+
+bash tools/dist_test2.sh configs/fpn/faster_rcnn_r50_fpn_1x_coco.py work_dirs/faster_rcnn_r50_fpn_1x_coco/epoch_12.pth 2 --format-only --options "jsonfile_prefix=./clfpn5-r50_test-dev_results"
+
+
+bash tools/dist_test2.sh configs/clfpn/faster_rcnn_r50_clfpn5_1x_coco.py work_dirs/faster_rcnn_r50_clfpn5_1x_coco/epoch_12.pth 2 --format-only --options "jsonfile_prefix=./clfpn5-r50_test-dev_results"
+
+(bash ./tools/dist_train.sh configs/clfpn/faster_rcnn_r101_clfpn5_1x_coco.py 2  --options  optimizer.lr=0.005 &)
+
+
+ python DetVisGUI/DetVisGUI_test_2.py configs/clfpn/faster_rcnn_r50_clfpn5_1x_coco.py work_dirs/faster_rcnn_r50_clfpn5_1x_coco/epoch_12.pth data/coco/val2017   --output  output/newclfpn
+
+ python DetVisGUI/DetVisGUI_test_3.py configs/clfpn/faster_rcnn_r50_fpn_1x_coco.py work_dirs/faster_rcnn_r50_fpn_1x_coco/epoch_12.pth data/coco/val2017   --output  output/newfpn
+
+ (bash ./tools/dist_train.sh configs/clfpn/faster_rcnn_x101_64x4d_clfpn_1x_coco.py 2  --options optimizer.lr=0.005 &)
+bash tools/dist_test.sh configs/clfpn/faster_rcnn_x101_64x4d_clfpn_1x_coco.py  work_dirs/faster_rcnn_x101_64x4d_clfpn_1x_coco/epoch_12.pth 2 --format-only --options "jsonfile_prefix=./clfpn5-x101_test-dev_results"
+
+ (bash ./tools/dist_train.sh configs/clfpn/faster_rcnn_r101_clfpn5_2x_coco.py  2  --options optimizer.lr=0.005 &)
+
+ bash tools/dist_test2.sh configs/clfpn/faster_rcnn_r101_clfpn5_2x_coco.py work_dirs/faster_rcnn_r101_clfpn5_2x_coco/epoch_24.pth 2 --format-only --options "jsonfile_prefix=./clfpn5-r101-2x_test-dev_results"
+
+  (bash ./tools/dist_train.sh configs/clfpn/retinanet_r50_cemfpn_1x_coco.py 2  --options optimizer.lr=0.0025 &)
+  (bash ./tools/dist_train.sh configs/clfpn/retinanet_r50_afpn4_1x_coco.py 2  --options optimizer.lr=0.0025 &)
+  (bash ./tools/dist_train2.sh configs/clfpn/retina_r50_clfpn5_1x_coco.py 2  --options optimizer.lr=0.0025 work_dir='./work_dirs/retina2_r50_clfpn5_1x_coco' &) 
+
+消融实验
+(bash ./tools/dist_train.sh configs/clfpn/faster_rcnn_r50_afpn4-c_1x_coco.py 2  --options optimizer.lr=0.005 &)
+
+(bash ./tools/dist_train2.sh configs/clfpn/faster_rcnn_r50_afpn4-s_1x_coco.py 2  --options optimizer.lr=0.005 &)
+(bash ./tools/dist_train2.sh configs/clfpn/faster_rcnn_r50_afpn4-s_1x_coco.py 2  --options optimizer.lr=0.005 &)
