@@ -44,8 +44,8 @@ source activate open-mmlab
 
 conda install -c pytorch pytorch torchvision -y
 conda install cython -y
-git clone https://github.com/Gus-Guo/AugFPN.git
-cd AugFPN
+git clone https://github.com/muyihao/CLFPN.git
+cd CLFPN
 bash compile.sh
 pip install .
 ```

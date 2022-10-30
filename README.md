@@ -37,7 +37,7 @@ Training
 ```
 For example,
 ```shell
-./tools/dist_train.sh configs/faster_rcnn_r50_clfpn_1x_coco.py 8 --validate --work_dir faster_rcnn_r50_augfpn_1x
+./tools/dist_train.sh configs/faster_rcnn_r50_clfpn_1x_coco.py 8 --validate --work_dir faster_rcnn_r50_clfpn_1x
 ```
 
 see more details at [mmdetection](https://github.com/open-mmlab/mmdetection)
