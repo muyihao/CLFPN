@@ -8,11 +8,13 @@ This project is based on [mmdetection](https://github.com/open-mmlab/mmdetection
 
 Introduction
 ----------------
-Object detection consists of two tasks: Classification and localization, which require large receptive field and high-resolution input respectively. How to strike a balance between the two conflicting needs remains a difficult problem in this field. Fortunately, feature pyramid network (FPN) realizes the fusion of low-level and high-level features, which alleviates this dilemma to some extent. However, most FPN based networks overlooked the importance of features of different levels during fusion process. Their simple fusion strategies can easily cause overwritten of important information, leading to serious aliasing effect. In this paper, we develop a context enhancement module to capture contextual information of different receptive fields, followed by a feature fusion module, which aggregates multi-level feature maps. Finally, the fused feature maps are refined by the proposed attention modules. Experiments have been conducted on mainstream datasets to validate the effectiveness of our network, in which CLFPN exhibits superior performances than other state-of-the-art works.
+An object detection task includes classification and localization, which require large receptive field and high-resolution input respectively. How to strike a balance between the two conflicting needs remains a difficult problem in this field. Fortunately, feature pyramid network (FPN) realizes the fusion of low-level and high-level features, which alleviates this dilemma to some extent. However, existing FPN based networks overlooked the importance of features of different levels during fusion process. Their simple fusion strategies can easily cause overwritten of important information, leading to serious aliasing effect. In this paper, we propose an improved object detector based on context and level aware feature pyramid networks. Experiments have been conducted on mainstream datasets to validate the effectiveness of our network, where it exhibits superior performances than other state-of-the-art works.
 
 Install
 -------------
 Please refer to [INSTALL.md](INSTALL.md) for installation.
+
+**note**: In this project, we only uploaded the core configuration file and model, other files could be found in [mmdetection](https://github.com/open-mmlab/mmdetection).
 
 Prepare data
 ----------
@@ -23,12 +25,6 @@ Prepare data
   ln -s /path_to_coco_dataset/test2017 data/coco/test2017
   ln -s /path_to_coco_dataset/val2017 data/coco/val2017
 ```
-
-
-Pretrained Models
----------------
-
-Pretrained models will be available.
 
 Training
 --------------
